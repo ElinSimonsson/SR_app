@@ -1,13 +1,14 @@
+import 'package:intl/intl.dart';
 import 'package:sr_schedules_app/models/channel.dart';
 import 'package:sr_schedules_app/models/program.dart';
 
 class ScheduleEntry {
-  final int episodeId;
+  final int? episodeId;
   final String title;
   final String? subtitle;
   final String description;
-  final String startTimeUtc;
-  final String endTimeUtc;
+  late String startTimeUtc;
+  late String endTimeUtc;
   final Program program;
   final Channel channel;
   final String? imageurl;
@@ -15,7 +16,7 @@ class ScheduleEntry {
   final String? photographer;
 
   ScheduleEntry({
-    required this.episodeId,
+    this.episodeId,
     required this.title,
     this.subtitle,
     required this.description,
@@ -30,7 +31,7 @@ class ScheduleEntry {
 
   factory ScheduleEntry.fromJson(Map<String, dynamic> json) {
     return ScheduleEntry(
-      episodeId: json['episodeid'],
+      episodeId: json['episodeid'] as int?,
       title: json['title'],
       subtitle: json['subtitle'] as String?,
       description: json['description'],
@@ -42,5 +43,24 @@ class ScheduleEntry {
       imageurltemplate: json['imageurltemplate'] as String?,
       photographer: json['photographer'] as String?,
     );
+  }
+}
+
+extension ScheduleEntryExtensions on ScheduleEntry {
+  void convertToDateTime() {
+    startTimeUtc = _convertToMillis(startTimeUtc);
+    endTimeUtc = _convertToMillis(endTimeUtc);
+  }
+
+  String _convertToMillis(String jsonDate) {
+    final numeric = jsonDate.split('(')[1].split(')')[0];
+    final negative = numeric.contains('-');
+    final parts = numeric.split(negative ? '-' : '+');
+    final millis = int.parse(parts[0]);
+
+    final dateTime = DateTime.fromMillisecondsSinceEpoch(millis);
+    final DateFormat formatter = DateFormat.Hm();
+    final String formatted = formatter.format(dateTime);
+    return formatted;
   }
 }
