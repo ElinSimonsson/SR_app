@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final String apiUrl =
         "http://api.sr.se/api/v2/scheduledepisodes?channelid=164&format=json&page=$currentPage";
     final response = await dio.get(apiUrl);
-    print(response.data);
     p3Schedule = Schedule.fromJson(response.data);
 
     setState(() {

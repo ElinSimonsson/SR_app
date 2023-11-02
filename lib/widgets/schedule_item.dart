@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sr_schedules_app/models/schedule_entry.dart';
 import 'package:sr_schedules_app/screens/detail_episode.dart';
+import 'package:sr_schedules_app/widgets/detail_episode_dialog.dart';
 
 class ScheduleItem extends StatelessWidget {
   final ScheduleEntry scheduleEntry;
@@ -20,7 +21,13 @@ class ScheduleItem extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 20),
         child: ListTile(
             onTap: () {
-              _navigateToDetailEpisode(context);
+              //_navigateToDetailEpisode(context);
+
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DetailEpisodeDialog(scheduleEntry: scheduleEntry);
+                  });
             },
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
