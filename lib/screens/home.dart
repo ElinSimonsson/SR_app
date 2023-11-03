@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final ScrollController _scrollController;
   int currentPage = 1;
   bool dataIsFetched = false;
+  bool isFetchingMoreSchedule = false;
 
   void _getScheuldes() async {
     final String apiUrl =
@@ -31,6 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       dataIsFetched = true;
       _schedulesEntries.addAll(p3Schedule.schedule);
+      if (isFetchingMoreSchedule) {
+        isFetchingMoreSchedule = false;
+      }
     });
   }
 
@@ -40,19 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
         !_scrollController.position.outOfRange) {
       setState(() {
         if (currentPage < p3Schedule.pagination.totalpages) {
+          isFetchingMoreSchedule = true;
           currentPage++;
           _getScheuldes();
-        } else {
-          print(
-              "currentPage: $currentPage, max ${p3Schedule.pagination.totalpages}");
         }
-      });
-    }
-    if (_scrollController.offset <=
-            _scrollController.position.minScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      setState(() {
-        print("reached the top");
       });
     }
   }
@@ -88,7 +83,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       ..._schedulesEntries.map((scheduleEntry) {
                         return ScheduleItem(scheduleEntry: scheduleEntry);
                       }).toList(),
-                      const SizedBox(height: 30),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30, top: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            isFetchingMoreSchedule
+                                ? const CircularProgressIndicator()
+                                : const SizedBox(),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),

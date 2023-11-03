@@ -26,7 +26,6 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
   contentBox(context) {
     return Stack(children: <Widget>[
       Container(
-        margin: const EdgeInsets.only(top: 45),
         decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.white,
@@ -47,8 +46,20 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
                 child: widget.scheduleEntry.imageurltemplate != null
                     ? Image.network(
                         widget.scheduleEntry.imageurltemplate ?? "",
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
                       )
-                    : Image.asset('assets/images/no_image_available.png')),
+                    : Image.asset('assets/images/no_image_landscape.png')),
             Padding(
               padding: const EdgeInsets.only(
                   left: 10, top: 20, bottom: 10, right: 10),
@@ -68,11 +79,19 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10, top: 5, bottom: 50),
-              child: Text(widget.scheduleEntry.description),
+              padding: const EdgeInsets.only(
+                  left: 10, top: 5, bottom: 50, right: 10),
+              child: Text.rich(TextSpan(children: <TextSpan>[
+                const TextSpan(
+                    text: 'Beskrivning: ',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                TextSpan(
+                    text: widget.scheduleEntry.description,
+                    style: const TextStyle(fontWeight: FontWeight.normal))
+              ])),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.only(right: 10, bottom: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
