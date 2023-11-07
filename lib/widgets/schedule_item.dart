@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sr_schedules_app/models/schedule_entry.dart';
-import 'package:sr_schedules_app/screens/detail_episode.dart';
 import 'package:sr_schedules_app/widgets/detail_episode_dialog.dart';
 
 class ScheduleItem extends StatelessWidget {
