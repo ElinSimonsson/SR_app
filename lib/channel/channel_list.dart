@@ -1,20 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:sr_schedules_app/constants/color.dart';
-import 'package:sr_schedules_app/models/schedule.dart';
-import 'package:sr_schedules_app/models/schedule_entry.dart';
+import 'package:sr_schedules_app/channel/models/schedule.dart';
+import 'package:sr_schedules_app/channel/models/schedule_entry.dart';
 import 'package:sr_schedules_app/widgets/schedule_item.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class ChannelList extends StatefulWidget {
+  const ChannelList({super.key, required this.id, required this.channelName});
+  final int id;
+  final String channelName;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ChannelList> createState() => _ChannelListState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ChannelListState extends State<ChannelList> {
   final dio = Dio();
   late Schedule p3Schedule;
   final List<ScheduleEntry> _schedulesEntries = [];
@@ -25,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _getScheuldes() async {
     final String apiUrl =
-        "http://api.sr.se/api/v2/scheduledepisodes?channelid=164&format=json&page=$currentPage";
+        "http://api.sr.se/api/v2/scheduledepisodes?channelid=${widget.id}&format=json&page=$currentPage";
     final response = await dio.get(apiUrl);
     p3Schedule = Schedule.fromJson(response.data);
 
@@ -112,15 +114,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return AppBar(
+      iconTheme: const IconThemeData(
+        color: Colors.white,
+      ),
       backgroundColor: srsaBlue,
-      leading: Container(
-          margin: const EdgeInsets.only(left: 8, bottom: 10),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Image.asset('assets/images/p3.png'),
-          )),
-      title: const Text("P3 Tablå",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+      title: Text("${widget.channelName} Tablå",
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w500)),
       centerTitle: true,
       actions: [
         Container(

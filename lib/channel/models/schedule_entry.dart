@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:sr_schedules_app/models/channel.dart';
-import 'package:sr_schedules_app/models/program.dart';
+import 'package:sr_schedules_app/channel/models/program.dart';
 
 class ScheduleEntry {
   final int? episodeId;
@@ -10,7 +9,6 @@ class ScheduleEntry {
   late String startTimeUtc;
   late String endTimeUtc;
   final Program program;
-  final Channel channel;
   final String? imageurl;
   final String? imageurltemplate;
   final String? photographer;
@@ -23,7 +21,6 @@ class ScheduleEntry {
     required this.startTimeUtc,
     required this.endTimeUtc,
     required this.program,
-    required this.channel,
     this.imageurl,
     this.imageurltemplate,
     this.photographer,
@@ -38,7 +35,6 @@ class ScheduleEntry {
       startTimeUtc: json['starttimeutc'],
       endTimeUtc: json['endtimeutc'],
       program: Program.fromJson(json['program']),
-      channel: Channel.fromJson(json['channel']),
       imageurl: json['imageurl'] as String?,
       imageurltemplate: json['imageurltemplate'] as String?,
       photographer: json['photographer'] as String?,

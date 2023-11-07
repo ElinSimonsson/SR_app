@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sr_schedules_app/models/schedule_entry.dart';
+import 'package:sr_schedules_app/channel/models/schedule_entry.dart';
 import 'package:sr_schedules_app/widgets/detail_episode_dialog.dart';
 
 class ScheduleItem extends StatelessWidget {
@@ -28,7 +28,9 @@ class ScheduleItem extends StatelessWidget {
             style: const TextStyle(fontSize: 20),
           ),
           title: Text(
-            scheduleEntry.program.name,
+            scheduleEntry.program.name != null
+                ? scheduleEntry.program.name ?? ""
+                : scheduleEntry.title,
             textAlign: TextAlign.center,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),

@@ -1,10 +1,10 @@
 class Program {
   final int id;
-  final String name;
+  final String? name;
 
   Program({
     required this.id,
-    required this.name,
+    this.name,
   });
 
   factory Program.fromJson(Map<String, dynamic> json) {

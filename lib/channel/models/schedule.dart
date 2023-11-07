@@ -1,5 +1,5 @@
-import 'package:sr_schedules_app/models/pagination.dart';
-import 'package:sr_schedules_app/models/schedule_entry.dart';
+import 'package:sr_schedules_app/channel/models/pagination.dart';
+import 'package:sr_schedules_app/channel/models/schedule_entry.dart';
 
 class Schedule {
   final List<ScheduleEntry> schedule;

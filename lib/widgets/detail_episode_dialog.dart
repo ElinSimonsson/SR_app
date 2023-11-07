@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sr_schedules_app/constants/color.dart';
-import 'package:sr_schedules_app/models/schedule_entry.dart';
+import 'package:sr_schedules_app/channel/models/schedule_entry.dart';
 
 class DetailEpisodeDialog extends StatefulWidget {
   final ScheduleEntry scheduleEntry;
@@ -73,7 +73,9 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
             Padding(
               padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
               child: Text(
-                widget.scheduleEntry.program.name,
+                widget.scheduleEntry.program.name != null
+                    ? widget.scheduleEntry.program.name ?? ""
+                    : widget.scheduleEntry.title,
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
@@ -86,7 +88,9 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
                     text: 'Beskrivning: ',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 TextSpan(
-                    text: widget.scheduleEntry.description,
+                    text: widget.scheduleEntry.description != ""
+                        ? widget.scheduleEntry.description
+                        : "Ingen beskrivning finns",
                     style: const TextStyle(fontWeight: FontWeight.normal))
               ])),
             ),
