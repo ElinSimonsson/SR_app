@@ -1,23 +1,25 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:sr_schedules_app/constants/color.dart';
-import 'package:sr_schedules_app/models/schedule.dart';
-import 'package:sr_schedules_app/models/schedule_entry.dart';
-import 'package:sr_schedules_app/widgets/schedule_item.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:sr_schedules_app/channel_episodes/models/schedule.dart';
+import 'package:sr_schedules_app/channel_episodes/models/episode.dart';
+import 'package:sr_schedules_app/widgets/episode_item.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class ChannelList extends StatefulWidget {
+  const ChannelList({super.key, required this.id, required this.channelName});
+  final int id;
+  final String channelName;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ChannelList> createState() => _ChannelListState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ChannelListState extends State<ChannelList> {
   final dio = Dio();
   late Schedule p3Schedule;
-  final List<ScheduleEntry> _schedulesEntries = [];
+  final List<Episode> _schedulesEntries = [];
   late final ScrollController _scrollController;
   int currentPage = 1;
   bool dataIsFetched = false;
@@ -25,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _getScheuldes() async {
     final String apiUrl =
-        "http://api.sr.se/api/v2/scheduledepisodes?channelid=164&format=json&page=$currentPage";
+        "http://api.sr.se/api/v2/scheduledepisodes?channelid=${widget.id}&format=json&page=$currentPage";
     final response = await dio.get(apiUrl);
     p3Schedule = Schedule.fromJson(response.data);
 
@@ -76,25 +78,34 @@ class _HomeScreenState extends State<HomeScreen> {
               ? const CircularProgressIndicator()
               : Container(
                   margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ListView(
-                    controller: _scrollController,
-                    children: <Widget>[
-                      const SizedBox(height: 30),
-                      ..._schedulesEntries.map((scheduleEntry) {
-                        return ScheduleItem(scheduleEntry: scheduleEntry);
-                      }).toList(),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 30, top: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            isFetchingMoreSchedule
-                                ? const CircularProgressIndicator()
-                                : const SizedBox(),
-                          ],
-                        ),
-                      )
-                    ],
+                  child: Center(
+                    child: _schedulesEntries.isEmpty
+                        ? const Text(
+                            "Tyvärr, inga avsnitt planerade för den här dagen.",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        : ListView(
+                            controller: _scrollController,
+                            children: <Widget>[
+                              const SizedBox(height: 30),
+                              ..._schedulesEntries.map((scheduleEntry) {
+                                return EpisodeItem(
+                                    scheduleEntry: scheduleEntry);
+                              }).toList(),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(bottom: 30, top: 30),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    isFetchingMoreSchedule
+                                        ? const CircularProgressIndicator()
+                                        : const SizedBox(),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                   ),
                 ),
         ));
@@ -112,15 +123,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return AppBar(
+      iconTheme: const IconThemeData(
+        color: Colors.white,
+      ),
       backgroundColor: srsaBlue,
-      leading: Container(
-          margin: const EdgeInsets.only(left: 8, bottom: 10),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Image.asset('assets/images/p3.png'),
-          )),
-      title: const Text("P3 Tablå",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+      title: Text("${widget.channelName} idag",
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w500)),
       centerTitle: true,
       actions: [
         Container(

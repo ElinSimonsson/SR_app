@@ -1,8 +1,8 @@
-import 'package:sr_schedules_app/models/pagination.dart';
-import 'package:sr_schedules_app/models/schedule_entry.dart';
+import 'package:sr_schedules_app/channel_episodes/models/pagination.dart';
+import 'package:sr_schedules_app/channel_episodes/models/episode.dart';
 
 class Schedule {
-  final List<ScheduleEntry> schedule;
+  final List<Episode> schedule;
   final Pagination pagination;
 
   Schedule({
@@ -13,7 +13,7 @@ class Schedule {
   factory Schedule.fromJson(Map<String, dynamic> json) {
     return Schedule(
         schedule: (json['schedule'] as List).map((entry) {
-          final scheduleEntry = ScheduleEntry.fromJson(entry);
+          final scheduleEntry = Episode.fromJson(entry);
           scheduleEntry.convertToDateTime();
           return scheduleEntry;
         }).toList(),

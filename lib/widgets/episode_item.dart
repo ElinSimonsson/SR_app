@@ -1,22 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:sr_schedules_app/models/schedule_entry.dart';
+import 'package:sr_schedules_app/channel_episodes/models/episode.dart';
+import 'package:sr_schedules_app/channel_episodes/models/schedule.dart';
 import 'package:sr_schedules_app/widgets/detail_episode_dialog.dart';
 
-class ScheduleItem extends StatelessWidget {
-  final ScheduleEntry scheduleEntry;
-  const ScheduleItem({super.key, required this.scheduleEntry});
+class EpisodeItem extends StatelessWidget {
+  final Episode scheduleEntry;
+  const EpisodeItem({super.key, required this.scheduleEntry});
 
   @override
   Widget build(BuildContext context) {
+    void _openCustomDialog() {
+      showGeneralDialog(
+          barrierColor: Colors.black.withOpacity(0.5),
+          transitionBuilder: (context, a1, a2, widget) {
+            return Transform.scale(
+              scale: a1.value,
+              child: Opacity(
+                opacity: a1.value,
+                child: DetailEpisodeDialog(scheduleEntry: scheduleEntry),
+              ),
+            );
+          },
+          transitionDuration: Duration(milliseconds: 200),
+          barrierDismissible: true,
+          barrierLabel: '',
+          context: context,
+          pageBuilder: (context, animation1, animation2) {
+            return Container();
+          });
+    }
+
     return Container(
         margin: const EdgeInsets.only(bottom: 20),
         child: ListTile(
           onTap: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return DetailEpisodeDialog(scheduleEntry: scheduleEntry);
-                });
+            _openCustomDialog();
+            // showDialog(
+            //     context: context,
+            //     builder: (BuildContext context) {
+            //       return DetailEpisodeDialog(scheduleEntry: scheduleEntry);
+            //     });
           },
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -28,7 +51,9 @@ class ScheduleItem extends StatelessWidget {
             style: const TextStyle(fontSize: 20),
           ),
           title: Text(
-            scheduleEntry.program.name,
+            scheduleEntry.program.name != null
+                ? scheduleEntry.program.name ?? ""
+                : scheduleEntry.title,
             textAlign: TextAlign.center,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),

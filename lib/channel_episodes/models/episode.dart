@@ -1,44 +1,40 @@
 import 'package:intl/intl.dart';
-import 'package:sr_schedules_app/models/channel.dart';
-import 'package:sr_schedules_app/models/program.dart';
+import 'package:sr_schedules_app/channel_episodes/models/program.dart';
 
-class ScheduleEntry {
+class Episode {
   final int? episodeId;
   final String title;
   final String? subtitle;
-  final String description;
+  final String? description;
   late String startTimeUtc;
   late String endTimeUtc;
   final Program program;
-  final Channel channel;
   final String? imageurl;
   final String? imageurltemplate;
   final String? photographer;
 
-  ScheduleEntry({
+  Episode({
     this.episodeId,
     required this.title,
     this.subtitle,
-    required this.description,
+    this.description,
     required this.startTimeUtc,
     required this.endTimeUtc,
     required this.program,
-    required this.channel,
     this.imageurl,
     this.imageurltemplate,
     this.photographer,
   });
 
-  factory ScheduleEntry.fromJson(Map<String, dynamic> json) {
-    return ScheduleEntry(
+  factory Episode.fromJson(Map<String, dynamic> json) {
+    return Episode(
       episodeId: json['episodeid'] as int?,
       title: json['title'],
       subtitle: json['subtitle'] as String?,
-      description: json['description'],
+      description: json['description'] as String?,
       startTimeUtc: json['starttimeutc'],
       endTimeUtc: json['endtimeutc'],
       program: Program.fromJson(json['program']),
-      channel: Channel.fromJson(json['channel']),
       imageurl: json['imageurl'] as String?,
       imageurltemplate: json['imageurltemplate'] as String?,
       photographer: json['photographer'] as String?,
@@ -46,7 +42,7 @@ class ScheduleEntry {
   }
 }
 
-extension ScheduleEntryExtensions on ScheduleEntry {
+extension ScheduleEntryExtensions on Episode {
   void convertToDateTime() {
     startTimeUtc = _convertToMillis(startTimeUtc);
     endTimeUtc = _convertToMillis(endTimeUtc);
