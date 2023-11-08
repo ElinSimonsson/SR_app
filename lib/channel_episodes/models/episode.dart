@@ -1,11 +1,11 @@
 import 'package:intl/intl.dart';
-import 'package:sr_schedules_app/channel/models/program.dart';
+import 'package:sr_schedules_app/channel_episodes/models/program.dart';
 
-class ScheduleEntry {
+class Episode {
   final int? episodeId;
   final String title;
   final String? subtitle;
-  final String description;
+  final String? description;
   late String startTimeUtc;
   late String endTimeUtc;
   final Program program;
@@ -13,11 +13,11 @@ class ScheduleEntry {
   final String? imageurltemplate;
   final String? photographer;
 
-  ScheduleEntry({
+  Episode({
     this.episodeId,
     required this.title,
     this.subtitle,
-    required this.description,
+    this.description,
     required this.startTimeUtc,
     required this.endTimeUtc,
     required this.program,
@@ -26,12 +26,12 @@ class ScheduleEntry {
     this.photographer,
   });
 
-  factory ScheduleEntry.fromJson(Map<String, dynamic> json) {
-    return ScheduleEntry(
+  factory Episode.fromJson(Map<String, dynamic> json) {
+    return Episode(
       episodeId: json['episodeid'] as int?,
       title: json['title'],
       subtitle: json['subtitle'] as String?,
-      description: json['description'],
+      description: json['description'] as String?,
       startTimeUtc: json['starttimeutc'],
       endTimeUtc: json['endtimeutc'],
       program: Program.fromJson(json['program']),
@@ -42,7 +42,7 @@ class ScheduleEntry {
   }
 }
 
-extension ScheduleEntryExtensions on ScheduleEntry {
+extension ScheduleEntryExtensions on Episode {
   void convertToDateTime() {
     startTimeUtc = _convertToMillis(startTimeUtc);
     endTimeUtc = _convertToMillis(endTimeUtc);

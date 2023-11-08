@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:sr_schedules_app/constants/color.dart';
-import 'package:sr_schedules_app/channel/models/schedule.dart';
-import 'package:sr_schedules_app/channel/models/schedule_entry.dart';
-import 'package:sr_schedules_app/widgets/schedule_item.dart';
+import 'package:sr_schedules_app/channel_episodes/models/schedule.dart';
+import 'package:sr_schedules_app/channel_episodes/models/episode.dart';
+import 'package:sr_schedules_app/widgets/episode_item.dart';
 
 class ChannelList extends StatefulWidget {
   const ChannelList({super.key, required this.id, required this.channelName});
@@ -19,7 +19,7 @@ class ChannelList extends StatefulWidget {
 class _ChannelListState extends State<ChannelList> {
   final dio = Dio();
   late Schedule p3Schedule;
-  final List<ScheduleEntry> _schedulesEntries = [];
+  final List<Episode> _schedulesEntries = [];
   late final ScrollController _scrollController;
   int currentPage = 1;
   bool dataIsFetched = false;
@@ -78,25 +78,34 @@ class _ChannelListState extends State<ChannelList> {
               ? const CircularProgressIndicator()
               : Container(
                   margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ListView(
-                    controller: _scrollController,
-                    children: <Widget>[
-                      const SizedBox(height: 30),
-                      ..._schedulesEntries.map((scheduleEntry) {
-                        return ScheduleItem(scheduleEntry: scheduleEntry);
-                      }).toList(),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 30, top: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            isFetchingMoreSchedule
-                                ? const CircularProgressIndicator()
-                                : const SizedBox(),
-                          ],
-                        ),
-                      )
-                    ],
+                  child: Center(
+                    child: _schedulesEntries.isEmpty
+                        ? const Text(
+                            "Tyvärr, inga avsnitt planerade för den här dagen.",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        : ListView(
+                            controller: _scrollController,
+                            children: <Widget>[
+                              const SizedBox(height: 30),
+                              ..._schedulesEntries.map((scheduleEntry) {
+                                return EpisodeItem(
+                                    scheduleEntry: scheduleEntry);
+                              }).toList(),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(bottom: 30, top: 30),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    isFetchingMoreSchedule
+                                        ? const CircularProgressIndicator()
+                                        : const SizedBox(),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                   ),
                 ),
         ));
@@ -118,7 +127,7 @@ class _ChannelListState extends State<ChannelList> {
         color: Colors.white,
       ),
       backgroundColor: srsaBlue,
-      title: Text("${widget.channelName} Tablå",
+      title: Text("${widget.channelName} idag",
           style: const TextStyle(
               color: Colors.white, fontWeight: FontWeight.w500)),
       centerTitle: true,

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sr_schedules_app/constants/color.dart';
+import 'package:sr_schedules_app/home/model/channel.dart';
 import 'package:sr_schedules_app/widgets/channel_item.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final dio = Dio();
   late List apiChannels = [];
-  late List allChannels = [];
+  final List<Channel> channels = [];
   late final ScrollController _scrollController;
   int currentPage = 1;
   late int totalPages;
@@ -26,7 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
       apiChannels = response.data['channels'];
       totalPages = response.data['pagination']['totalpages'];
       for (var channel in apiChannels) {
-        allChannels.add(channel);
+        final channelTest = Channel.fromJson(channel);
+        channels.add(channelTest);
       }
     });
   }
@@ -63,16 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
           controller: _scrollController,
           children: <Widget>[
             const SizedBox(height: 30),
-            ...allChannels.map((e) {
-              final name = e['name'] as String;
-              final channelType = e['channeltype'] as String;
-              final imageUrl = (e['image'] as String?) ?? "";
-              final id = e['liveaudio']['id'];
-              return ChannelItem(
-                  name: name,
-                  channelType: channelType,
-                  imageUrl: imageUrl,
-                  id: id);
+            ...channels.map((channel) {
+              return ChannelItem(channel: channel);
             }).toList()
           ],
         ),

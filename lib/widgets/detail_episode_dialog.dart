@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sr_schedules_app/constants/color.dart';
-import 'package:sr_schedules_app/channel/models/schedule_entry.dart';
+import 'package:sr_schedules_app/channel_episodes/models/episode.dart';
 
 class DetailEpisodeDialog extends StatefulWidget {
-  final ScheduleEntry scheduleEntry;
+  final Episode scheduleEntry;
   const DetailEpisodeDialog({super.key, required this.scheduleEntry});
 
   @override
@@ -38,28 +38,33 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0),
-                ),
-                child: widget.scheduleEntry.imageurltemplate != null
-                    ? Image.network(
-                        widget.scheduleEntry.imageurltemplate ?? "",
-                        loadingBuilder: (BuildContext context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
-                      )
-                    : Image.asset('assets/images/no_image_landscape.png')),
+            Container(
+              height: 200,
+              child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                  ),
+                  child: widget.scheduleEntry.imageurltemplate != null
+                      ? Image.network(
+                          widget.scheduleEntry.imageurltemplate ?? "",
+                          fit: BoxFit.cover,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                        )
+                      : Image.asset('assets/images/no_image_landscape.png')),
+            ),
             Padding(
               padding: const EdgeInsets.only(
                   left: 10, top: 20, bottom: 10, right: 10),

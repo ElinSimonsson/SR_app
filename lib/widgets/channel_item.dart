@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sr_schedules_app/channel/channel_list.dart';
+import 'package:sr_schedules_app/channel_episodes/channel_list.dart';
+import 'package:sr_schedules_app/home/model/channel.dart';
 
 class ChannelItem extends StatelessWidget {
-  const ChannelItem(
-      {super.key,
-      required this.name,
-      required this.channelType,
-      required this.imageUrl,
-      required this.id});
+  const ChannelItem({super.key, required this.channel});
 
-  final String imageUrl;
-  final String name;
-  final String channelType;
-  final int id;
+  final Channel channel;
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +13,13 @@ class ChannelItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 20),
       child: ListTile(
           onTap: () {
+            print(channel.id);
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => ChannelList(
-                          id: id,
-                          channelName: name,
+                          id: channel.id,
+                          channelName: channel.name,
                         )));
           },
           shape:
@@ -35,20 +29,20 @@ class ChannelItem extends StatelessWidget {
           tileColor: Colors.white,
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(5),
-            child: imageUrl != ""
-                ? Image.network(imageUrl)
+            child: channel.image != null
+                ? Image.network(channel.image ?? "")
                 : Image.asset(
                     "assets/images/no_image_available.png",
                     fit: BoxFit.fill,
                   ),
           ),
           title: Text(
-            name,
+            channel.name,
             textAlign: TextAlign.center,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-            channelType,
+            channel.channelType,
             textAlign: TextAlign.center,
           ),
           trailing: const Icon(Icons.arrow_forward)),
