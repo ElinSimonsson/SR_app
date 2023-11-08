@@ -38,7 +38,7 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
+            SizedBox(
               height: 200,
               child: ClipRRect(
                   borderRadius: const BorderRadius.only(
@@ -63,7 +63,10 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
                             );
                           },
                         )
-                      : Image.asset('assets/images/no_image_landscape.png')),
+                      : Image.asset(
+                          'assets/images/no_image_landscape.png',
+                          fit: BoxFit.cover,
+                        )),
             ),
             Padding(
               padding: const EdgeInsets.only(

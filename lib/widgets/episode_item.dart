@@ -9,7 +9,7 @@ class EpisodeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _openCustomDialog() {
+    void openCustomDialog() {
       showGeneralDialog(
           barrierColor: Colors.black.withOpacity(0.5),
           transitionBuilder: (context, a1, a2, widget) {
@@ -21,7 +21,7 @@ class EpisodeItem extends StatelessWidget {
               ),
             );
           },
-          transitionDuration: Duration(milliseconds: 200),
+          transitionDuration: const Duration(milliseconds: 200),
           barrierDismissible: true,
           barrierLabel: '',
           context: context,
@@ -34,12 +34,7 @@ class EpisodeItem extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 20),
         child: ListTile(
           onTap: () {
-            _openCustomDialog();
-            // showDialog(
-            //     context: context,
-            //     builder: (BuildContext context) {
-            //       return DetailEpisodeDialog(scheduleEntry: scheduleEntry);
-            //     });
+            openCustomDialog();
           },
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
