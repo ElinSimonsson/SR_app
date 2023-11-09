@@ -14,6 +14,7 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  late Timer _timer;
 
   @override
   void initState() {
@@ -33,13 +34,20 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    Timer(
+    _timer = Timer(
       const Duration(seconds: 3),
       () => Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
