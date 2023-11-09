@@ -3,8 +3,8 @@ import 'package:sr_schedules_app/constants/color.dart';
 import 'package:sr_schedules_app/channel_episodes/models/episode.dart';
 
 class DetailEpisodeDialog extends StatefulWidget {
-  final Episode scheduleEntry;
-  const DetailEpisodeDialog({super.key, required this.scheduleEntry});
+  final Episode episode;
+  const DetailEpisodeDialog({super.key, required this.episode});
 
   @override
   State<DetailEpisodeDialog> createState() => _DetailEpisodeDialogState();
@@ -45,9 +45,9 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
                   ),
-                  child: widget.scheduleEntry.imageurltemplate != null
+                  child: widget.episode.imageurltemplate != null
                       ? Image.network(
-                          widget.scheduleEntry.imageurltemplate ?? "",
+                          widget.episode.imageurltemplate ?? "",
                           fit: BoxFit.cover,
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
@@ -72,7 +72,7 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
               padding: const EdgeInsets.only(
                   left: 10, top: 20, bottom: 10, right: 10),
               child: Text(
-                  "Idag ${widget.scheduleEntry.startTimeUtc} - ${widget.scheduleEntry.endTimeUtc}"),
+                  "Idag ${widget.episode.startTimeUtc} - ${widget.episode.endTimeUtc}"),
             ),
             const Divider(
               color: Color.fromARGB(255, 178, 178, 178),
@@ -81,9 +81,9 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
             Padding(
               padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
               child: Text(
-                widget.scheduleEntry.program.name != null
-                    ? widget.scheduleEntry.program.name ?? ""
-                    : widget.scheduleEntry.title,
+                widget.episode.program.name != null
+                    ? widget.episode.program.name ?? ""
+                    : widget.episode.title,
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
@@ -96,8 +96,8 @@ class _DetailEpisodeDialogState extends State<DetailEpisodeDialog> {
                     text: 'Beskrivning: ',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 TextSpan(
-                    text: widget.scheduleEntry.description != ""
-                        ? widget.scheduleEntry.description
+                    text: widget.episode.description != ""
+                        ? widget.episode.description
                         : "Ingen beskrivning finns",
                     style: const TextStyle(fontWeight: FontWeight.normal))
               ])),

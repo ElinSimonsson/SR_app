@@ -5,12 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:sr_schedules_app/constants/color.dart';
 import 'package:sr_schedules_app/channel_episodes/models/schedule.dart';
 import 'package:sr_schedules_app/channel_episodes/models/episode.dart';
+import 'package:sr_schedules_app/home/model/channel.dart';
 import 'package:sr_schedules_app/widgets/episode_item.dart';
 
 class ChannelList extends StatefulWidget {
-  const ChannelList({super.key, required this.id, required this.channelName});
-  final int id;
-  final String channelName;
+  const ChannelList({super.key, required this.channel});
+  final Channel channel;
 
   @override
   State<ChannelList> createState() => _ChannelListState();
@@ -27,7 +27,7 @@ class _ChannelListState extends State<ChannelList> {
 
   void _getScheuldes() async {
     final String apiUrl =
-        "http://api.sr.se/api/v2/scheduledepisodes?channelid=${widget.id}&format=json&page=$currentPage";
+        "http://api.sr.se/api/v2/scheduledepisodes?channelid=${widget.channel.id}&format=json&page=$currentPage";
     final response = await dio.get(apiUrl);
     p3Schedule = Schedule.fromJson(response.data);
 
@@ -89,8 +89,7 @@ class _ChannelListState extends State<ChannelList> {
                             children: <Widget>[
                               const SizedBox(height: 30),
                               ..._schedulesEntries.map((scheduleEntry) {
-                                return EpisodeItem(
-                                    scheduleEntry: scheduleEntry);
+                                return EpisodeItem(episode: scheduleEntry);
                               }).toList(),
                               Padding(
                                 padding:
@@ -127,9 +126,9 @@ class _ChannelListState extends State<ChannelList> {
         color: Colors.white,
       ),
       backgroundColor: srsaBlue,
-      title: Text("${widget.channelName} idag",
+      title: Text("${widget.channel.name} idag",
           style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.w500)),
+              color: Colors.white, fontWeight: FontWeight.w500, fontSize: 17)),
       centerTitle: true,
       actions: [
         Container(
@@ -137,7 +136,7 @@ class _ChannelListState extends State<ChannelList> {
           child: Text(
             formattedDateTime(),
             style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),
+                color: Colors.white, fontWeight: FontWeight.w500, fontSize: 17),
           ),
         )
       ],

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sr_schedules_app/channel_episodes/models/episode.dart';
-import 'package:sr_schedules_app/channel_episodes/models/schedule.dart';
 import 'package:sr_schedules_app/widgets/detail_episode_dialog.dart';
 
 class EpisodeItem extends StatelessWidget {
-  final Episode scheduleEntry;
-  const EpisodeItem({super.key, required this.scheduleEntry});
+  final Episode episode;
+  const EpisodeItem({super.key, required this.episode});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class EpisodeItem extends StatelessWidget {
               scale: a1.value,
               child: Opacity(
                 opacity: a1.value,
-                child: DetailEpisodeDialog(scheduleEntry: scheduleEntry),
+                child: DetailEpisodeDialog(episode: episode),
               ),
             );
           },
@@ -42,26 +41,26 @@ class EpisodeItem extends StatelessWidget {
               const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           tileColor: Colors.white,
           leading: Text(
-            scheduleEntry.startTimeUtc,
+            episode.startTimeUtc,
             style: const TextStyle(fontSize: 20),
           ),
           title: Text(
-            scheduleEntry.program.name != null
-                ? scheduleEntry.program.name ?? ""
-                : scheduleEntry.title,
+            episode.program.name != null
+                ? episode.program.name ?? ""
+                : episode.title,
             textAlign: TextAlign.center,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          subtitle: scheduleEntry.subtitle != null
+          subtitle: episode.subtitle != null
               ? Text(
-                  scheduleEntry.subtitle ?? "",
+                  episode.subtitle ?? "",
                   textAlign: TextAlign.center,
                 )
               : null,
           trailing: ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: scheduleEntry.imageurl != null
-                ? Image.network(scheduleEntry.imageurl ?? "")
+            child: episode.imageurl != null
+                ? Image.network(episode.imageurl ?? "")
                 : Image.asset(
                     "assets/images/no_image_available.png",
                     fit: BoxFit.fill,

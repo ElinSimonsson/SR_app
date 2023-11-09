@@ -13,13 +13,11 @@ class ChannelItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 20),
       child: ListTile(
           onTap: () {
-            print(channel.id);
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => ChannelList(
-                          id: channel.id,
-                          channelName: channel.name,
+                          channel: channel,
                         )));
           },
           shape:
