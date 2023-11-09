@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: srsaBlue,
       centerTitle: true,
       title: const Text(
-        "Alla Sverige Radio kanaler",
+        "Sveriges Radio kanaler",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
       ),
     );
